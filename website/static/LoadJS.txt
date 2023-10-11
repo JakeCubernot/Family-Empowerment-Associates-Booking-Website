@@ -1,0 +1,8 @@
+Quick tutorial on how to load custom JS. 
+1. Make sure the JS script is in the static folder.
+2. Go to HTML where you want to include your script.
+3. Paste this:
+    <script
+        type="text/javascript"
+        src="{{ url_for('static', filename='YourJSFile.js') }}"
+    ></script>

@@ -1,0 +1,4 @@
+I am using this tutorial to make this:
+https://www.youtube.com/watch?v=dam0GPOAvVI&t=678s&ab_channel=TechWithTim
+
+If we can all get through this, we'll have our starting working enviorment. 
