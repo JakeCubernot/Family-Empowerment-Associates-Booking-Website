@@ -19,3 +19,15 @@ class User(db.Model, UserMixin):
 
 class Room(db.Model, UserMixin):
     name = db.Column(db.String(100), primary_key=True)
+
+class Therapist(db.Model, UserMixin):
+    therapist_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    email = db.Column(db.String(150),db.ForeignKey('user.email'))
+    password = db.Column(db.String(150), db.ForeignKey('user.password'))
+    first_name = db.Column(db.String(150), db.ForeignKey('user.first_name'))
+
+class Admin(db.Model, UserMixin):
+    admin_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    email = db.Column(db.String(150), db.ForeignKey('user.email'))
