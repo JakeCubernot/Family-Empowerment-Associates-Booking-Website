@@ -49,7 +49,7 @@ def register():
             new_user = User(email=email, first_name=first_name, password=generate_password_hash((password1), method='sha256'))
             db.session.add(new_user) #Adds user above to db.
             db.session.commit()
-            login_user(user, remember=True) #will login the user after creating account. 
+            login_user(new_user, remember=True) #will login the user after creating account. 
 
 
             flash('Account Created!', category='success')
