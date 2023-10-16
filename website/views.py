@@ -51,15 +51,16 @@ def control_panel():
 def therapist_control():
     thera = Therapist.quesry.all()
     return render_template('control_panel.html', user=current_user, thera=thera)
-@views.route('/control_panel', methods = ['GET', 'POST'])
+@views.route('/control_panel', methods = ['POST'])
+@login_required
 def new_therapist():
     if request.method == 'POST':
-        if not request.form['id'] or not request.form['name'] or not request.form['email']:
-            flash('Please enter all the fields', 'error')
-        else:
-            therapist = User(request.form['id'], request.form['name'],request.form['email'])
-        db.Therapist.add(therapist)
-        db.Therapist.commit()
-        flash('Therapist was added')
-        return redirect(url_for('control_panel'))
+        userid = request.form['id']
+        name = request.form['name']
+        email = request.form['email']
+        thera = Therapist(user_id=userid, email = email, first_name = name)
+        db.session.add(thera)
+        db.session.commit()
+        flash('Therapist added', 'success')
+        return redirect(url_for('views.control_panel'))
     return render_template('control_panel.html')

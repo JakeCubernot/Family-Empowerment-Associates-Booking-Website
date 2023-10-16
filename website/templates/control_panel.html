@@ -29,7 +29,7 @@
     <h3>Add FEA Therapist</h3>
     <form action = "{{request.path }}" method = "POST">
         <label for = "id">User ID</label><br>
-        <input typ = "text" id = "id" placeholder="1234" /><br>
+        <input type = "number" step = "1" pattern="\d+" /><br>
         <label for = "name">Name</label><br>
         <input type = "text" name = "name" placeholder="Name" /><br>
         <label for = "email">Email</label><br>

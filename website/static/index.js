@@ -10,6 +10,6 @@ function deleteNote(noteId) {
  function newTherapist(thera) {
     fetch("/control_panel", {
     method: "POST",
-
+    body:
     }
   }
