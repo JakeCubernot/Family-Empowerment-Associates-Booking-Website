@@ -21,6 +21,53 @@
         />
 
         <title>{% block title %}Home{% endblock %}</title> <!-- Using Jinga Notation -->
+        <style>
+        .title {
+            margin: 5px;
+        }
+
+        .content {
+            margin: 5px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .user {
+            flex: 20%;
+            padding: 10px;
+            margin: 5px;
+            background-color: #f3f3f3;
+            inline-size: 100%;
+        }
+
+        .name {
+            color: #00a36f;
+            text-decoration: none;
+        }
+
+
+        .pagination {
+            margin: 0 auto;
+        }
+
+        .pagination span {
+            font-size: 2em;
+            margin-right: 10px;
+        }
+
+        .page-number {
+            color: #d64161;
+            padding: 5px;
+            text-decoration: none;
+        }
+
+        .current-page-number {
+            color: #666
+        }
+
+    </style>
     </head>
 
     <body>  <!-- Navbar is imported from Bootstrap. <nav> is the navigation panel,
@@ -39,8 +86,9 @@
               {% if user.is_authenticated %}
               <a class="nav-item nav-link" id="home" href="/">Home</a>
               <a class="nav-item nav-link" id="book" href="/book">Book a Room</a>
+              <a class="nav-item nav-link" id="control_panel" href="/control_panel">Control Panel</a>
               <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-              {% else %}
+                {% else %}
               <a class="nav-item nav-link" id="login" href="/login">Login</a>
               <a class="nav-item nav-link" id="Register" href="/register">Register</a>
               {% endif %}
@@ -90,6 +138,7 @@
         type="text/javascript"
         src="{{ url_for('static', filename='index.js') }}">
       </script>
+
     </body>
 
     <footer>

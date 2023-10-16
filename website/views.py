@@ -40,3 +40,8 @@ def delete_note():
 def book():
     return render_template('book.html', user=current_user)
     
+@views.route('/control_panel', methods=['GET', 'POST'])
+@login_required
+def control_panel():
+    user = User.query.all()
+    return render_template('control_panel.html', user=user)

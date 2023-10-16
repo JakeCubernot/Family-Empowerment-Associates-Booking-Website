@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Control Panel{% endblock %} '
+{% block content %}
+<h1 align="center">Control Panel</h1>
+    <html lang="en">
+    <body>
+    <body>
+
+
+      <table>
+         <thead>
+            <tr>
+               <th>Name</th>
+               <th>Email</th>
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for user in user %}
+               <tr>
+                  <td>{{ user.first_name }}</td>
+                  <td>{{ user.email }}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+
+   </body>
+</html>
+{% endblock %}
