@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user #When user is logged in, current_user will retrieve all data
-from .models import User, Note
+from .models import User, Note, Therapist, Admin
 from .import db
 import json
 
@@ -45,3 +45,21 @@ def book():
 def control_panel():
     user1 = User.query.all()
     return render_template('control_panel.html', user=current_user,user1=user1)
+
+@views.route('/control_panel', methods=['GET', 'POST'])
+@login_required
+def therapist_control():
+    thera = Therapist.quesry.all()
+    return render_template('control_panel.html', user=current_user, thera=thera)
+@views.route('/control_panel', methods = ['GET', 'POST'])
+def new_therapist():
+    if request.method == 'POST':
+        if not request.form['id'] or not request.form['name'] or not request.form['email']:
+            flash('Please enter all the fields', 'error')
+        else:
+            therapist = User(request.form['id'], request.form['name'],request.form['email'])
+        db.Therapist.add(therapist)
+        db.Therapist.commit()
+        flash('Therapist was added')
+        return redirect(url_for('control_panel'))
+    return render_template('control_panel.html')

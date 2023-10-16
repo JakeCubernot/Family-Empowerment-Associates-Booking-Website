@@ -4,8 +4,8 @@
     <html lang="en">
     <body>
     <body>
-
-
+    <hr/>
+    <h3> FEA Users </h3>
       <table>
          <thead>
             <tr>
@@ -25,7 +25,37 @@
             {% endfor %}
          </tbody>
       </table>
-    <form action = "{{request.path }}" method =
+    <hr/>
+    <h3>Add FEA Therapist</h3>
+    <form action = "{{request.path }}" method = "POST">
+        <label for = "id">User ID</label><br>
+        <input typ = "text" id = "id" placeholder="1234" /><br>
+        <label for = "name">Name</label><br>
+        <input type = "text" name = "name" placeholder="Name" /><br>
+        <label for = "email">Email</label><br>
+        <input type = "text" email = "email" placeholder="Email" /><br>
+        <input type = "submit" value = "Submit" />
+    </form>
+    <hr/>
+    <h3> Therapist Users</h3>
+    <table>
+         <thead>
+            <tr>
+                <th>Therapist ID</th>
+               <th>Name</th>
+               <th>Email</th>
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for thera in thera %}
+               <tr>
+                   <td>{{ thera.id}}</td>
+                  <td>{{ thera.first_name }}</td>
+                  <td>{{ thera.email }}</td>
+               </tr>
+            {% endfor %}
    </body>
+
 </html>
 {% endblock %}
