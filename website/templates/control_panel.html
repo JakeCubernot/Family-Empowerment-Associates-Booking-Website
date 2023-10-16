@@ -9,21 +9,23 @@
       <table>
          <thead>
             <tr>
+                <th>User ID</th>
                <th>Name</th>
                <th>Email</th>
             </tr>
          </thead>
 
          <tbody>
-            {% for user in user %}
+            {% for user in user1 %}
                <tr>
+                   <td>{{ user.id}}</td>
                   <td>{{ user.first_name }}</td>
                   <td>{{ user.email }}</td>
                </tr>
             {% endfor %}
          </tbody>
       </table>
-
+    <form action = "{{request.path }}" method =
    </body>
 </html>
 {% endblock %}

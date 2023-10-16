@@ -43,5 +43,5 @@ def book():
 @views.route('/control_panel', methods=['GET', 'POST'])
 @login_required
 def control_panel():
-    user = User.query.all()
-    return render_template('control_panel.html', user=user)
+    user1 = User.query.all()
+    return render_template('control_panel.html', user=current_user,user1=user1)
