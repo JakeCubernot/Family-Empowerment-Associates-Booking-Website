@@ -44,13 +44,10 @@ def book():
 @login_required
 def control_panel():
     user1 = User.query.all()
-    return render_template('control_panel.html', user=current_user, user1=user1)
-
-@views.route('/therapist_table', methods=['GET', 'POST'])
-@login_required
-def therapist_control():#Displays the contents of the Therapist database into the HTML table
     therapist1 = Therapist.query.all()
-    return render_template('control_panel.html', user=current_user, therapist1=therapist1)
+    admin = Admin.query.all()
+    return render_template('control_panel.html', user=current_user, user1=user1, therapist1=therapist1, admin=admin)
+
 @views.route('/add-therapist', methods = ['GET', 'POST'])
 @login_required
 def new_therapist():#Adds the Add Therapist form submissions into the Therapist Database
@@ -65,12 +62,6 @@ def new_therapist():#Adds the Add Therapist form submissions into the Therapist 
         flash('Therapist Added', category='success')
         return redirect(url_for('views.control_panel'))
     return render_template('control_panel.html', user=current_user)
-
-@views.route('admin_table', methods=['GET','POST'])
-@login_required
-def admin_table():
-    admin = Admin.query.all()
-    return render_template('control_panel.html', user=current_user, admin=admin)
 
 @views.route('/add-admin', methods = ['GET', 'POST'])
 @login_required
