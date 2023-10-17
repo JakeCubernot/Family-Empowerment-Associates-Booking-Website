@@ -23,7 +23,7 @@ class Room(db.Model, UserMixin):
 class Therapist(db.Model, UserMixin):
     therapist_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    email = db.Column(db.String(150),db.ForeignKey('user.email'))
+    email = db.Column(db.String(150), db.ForeignKey('user.email'))
     first_name = db.Column(db.String(150), db.ForeignKey('user.first_name'))
 
 class Admin(db.Model, UserMixin):
