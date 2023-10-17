@@ -8,7 +8,7 @@
         <div class="section">
             <hr style="opacity: 0.5;">
             <h3>Add FEA Therapist</h3>
-            <form action="{{ request.path }}" method="POST">
+            <form method="POST">
                 <div class="form-group">
                     <label for="id">User ID</label>
                     <input type="number" step="1" class="form-control" id="id" placeholder="Enter User ID" />
@@ -21,6 +21,7 @@
                     <label for="email">Email</label>
                     <input type="text" class="form-control" id="email" placeholder="Enter Email" />
                 </div>
+                <br />
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

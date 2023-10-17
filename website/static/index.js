@@ -7,9 +7,3 @@ function deleteNote(noteId) {
       window.location.href = "/";
     });
   }
- function newTherapist(thera) {
-    fetch("/control_panel", {
-    method: "POST",
-    body:
-    }
-  }
