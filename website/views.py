@@ -65,3 +65,23 @@ def new_therapist():#Adds the Add Therapist form submissions into the Therapist 
         flash('Therapist Added', category='success')
         return redirect(url_for('views.control_panel'))
     return render_template('control_panel.html', user=current_user)
+
+@views.route('admin_table', methods=['GET','POST'])
+@login_required
+def admin_table():
+    admin = Admin.query.all()
+    return render_template('control_panel.html', user=current_user, admin=admin)
+
+@views.route('/add-admin', methods = ['GET', 'POST'])
+@login_required
+def new_admin():#Adds the Add Therapist form submissions into the Therapist Database
+    if request.method == 'POST':
+        userid = request.form["id"]
+        email = request.form["email"]
+
+        adm = Admin(user_id=userid,  email=email)
+        db.session.add(adm)
+        db.session.commit()
+        flash('Admin Added', category='success')
+        return redirect(url_for('views.control_panel'))
+    return render_template('control_panel.html', user=current_user)
