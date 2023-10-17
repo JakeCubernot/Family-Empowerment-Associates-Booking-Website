@@ -46,24 +46,23 @@ def control_panel():
     user1 = User.query.all()
     return render_template('control_panel.html', user=current_user,user1=user1)
 
-@views.route('/control_panel', methods=['GET', 'POST'])
+@views.route('/therapist_table', methods=['GET', 'POST'])
 @login_required
 def therapist_control():
-    thera = Therapist.query.all()
-    return render_template('control_panel.html', user=current_user, thera=thera)
-@views.route('/add-therepist', methods = ['GET', 'POST'])
+    therap = Therapist.query.all()
+    return render_template('control_panel.html', user=current_user, therap=therap)
+@views.route('/add-therapist', methods = ['GET', 'POST'])
 @login_required
 def new_therapist():
     if request.method == 'POST':
-        userid = request.form['id']
-        name = request.form['name']
-        email = request.form['email']
-        therap = Therapist.query.filter_by(user_id=userid)
-        if therap:
-            flash('Therapist already registered!', category='error')
-        else:
-            thera = Therapist(user_id=userid, first_name=name, email=email)
-            db.session.add(thera)
-            db.session.commit()
-            flash('Therapist Added', category='success')
-            return redirect(url_for('views.control_panel'))
+        userid = request.form["id"]
+        name = request.form["name"]
+        email = request.form["email"]
+
+        thera = Therapist(user_id=userid, first_name=name, email=email)
+        db.session.add(thera)
+        db.session.commit()
+        flash('Therapist Added', category='success')
+        return redirect(url_for('views.control_panel'))
+        therap = Therapist.query.all()
+    return render_template('control_panel.html', user=current_user, thera=therap)

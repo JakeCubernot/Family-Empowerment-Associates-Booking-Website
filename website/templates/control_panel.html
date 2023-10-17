@@ -8,18 +8,18 @@
         <div class="section">
             <hr style="opacity: 0.5;">
             <h3>Add FEA Therapist</h3>
-            <form method="POST">
+            <form method="POST" action="/add-therapist">
                 <div class="form-group">
                     <label for="id">User ID</label>
-                    <input type="number" step="1" class="form-control" id="id" placeholder="Enter User ID" />
+                    <input type="number" step="1" class="form-control" name="id" placeholder="Enter User ID" />
                 </div>
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter Name" />
+                    <input type="text" class="form-control" name="name" placeholder="Enter Name" />
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="text" class="form-control" id="email" placeholder="Enter Email" />
+                    <input type="text" class="form-control" name="email" placeholder="Enter Email" />
                 </div>
                 <br />
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -67,11 +67,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for thera in thera %}
+                            {% for therapist in therap %}
                                 <tr>
-                                    <td style="width: 20%;">{{ thera.id }}</td>
-                                    <td style="width: 30%;">{{ thera.first_name }}</td>
-                                    <td style="width: 30%;">{{ thera.email }}</td>
+                                    <td style="width: 20%;">{{ therapist.therapist_id }}</td>
+                                    <td style="width: 20%;">{{ therapist.user_id }}</td>
+                                    <td style="width: 30%;">{{ therapist.first_name }}</td>
+                                    <td style="width: 30%;">{{ therapist.email }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

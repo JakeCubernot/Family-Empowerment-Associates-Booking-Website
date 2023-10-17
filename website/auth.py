@@ -26,7 +26,7 @@ def login():
 
     return render_template('login.html', user=current_user) #current_user retrives data if user is logged in.
 
-@auth.route('/register', methods=['GET', 'POST'])
+@auth.route('/register', methods=['POST'])
 def register():
     if request.method == 'POST':
         email = request.form.get('email')
