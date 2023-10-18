@@ -118,7 +118,7 @@ def delete_user():
         elif therapist:
             flash('User is a Therapist', 'error')
         else:
-            remove_user = Therapist.query.get_or_404(user_id)
+            remove_user = User.query.get_or_404(user_id)
             db.session.delete(remove_user)
             db.session.commit()
         return redirect(url_for('views.control_panel'))
