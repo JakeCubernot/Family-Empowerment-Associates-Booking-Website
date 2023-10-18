@@ -42,7 +42,7 @@ def book():
     
 @views.route('/control_panel', methods=['GET', 'POST'])
 @login_required
-def control_panel():
+def control_panel():#Loads the Databases into the HTML tables
     user1 = User.query.all()
     therapist1 = Therapist.query.all()
     admin = Admin.query.all()
@@ -50,13 +50,13 @@ def control_panel():
 
 @views.route('/add-therapist', methods = ['GET', 'POST'])
 @login_required
-def new_therapist():#Adds the Add Therapist form submissions into the Therapist Database
+def new_therapist():#Adds user into the Therapist database
     if request.method == 'POST':
         userid = request.form["id"]
         name = request.form["user_name"]
         email = request.form["user_email"]
         therapist = Therapist.query.filter_by(email=email).first()
-        if therapist:
+        if therapist:#Prevents duplicating existing therapists in the database
             flash('Already a Therapist', 'error')
         else:
             thera = Therapist(user_id=userid, first_name=name, email=email)
@@ -68,13 +68,13 @@ def new_therapist():#Adds the Add Therapist form submissions into the Therapist 
 
 @views.route('/add-admin', methods = ['GET', 'POST'])
 @login_required
-def new_admin():#Adds the Add Therapist form submissions into the Therapist Database
+def new_admin():#Adds user into the Admin database
 
     if request.method == 'POST':
         userid = request.form["id"]
         email = request.form["email"]
         admin = Admin.query.filter_by(email=email).first()
-        if admin:
+        if admin:#Prevents duplicating existing admins in the database
             flash('Already an Admin', category='error')
         else:
             adm = Admin(user_id=userid,  email=email)
@@ -86,7 +86,7 @@ def new_admin():#Adds the Add Therapist form submissions into the Therapist Data
 
 @views.route('/delete_admin', methods = ['GET', 'POST'])
 @login_required
-def delete_admin():
+def delete_admin(): #Used to remove Admin from the Admin databse
     if request.method == 'POST':
         admin_id = request.form['admin_id']
         remove_admin = Admin.query.get_or_404(admin_id)
@@ -97,7 +97,7 @@ def delete_admin():
 
 @views.route('/delete_therapist', methods = ['GET', 'POST'])
 @login_required
-def delete_therapist():
+def delete_therapist(): #Used to remove therapist from the Therapist database
     if request.method == 'POST':
         therapist_id = request.form['therapist_id']
         remove_therapist = Therapist.query.get_or_404(therapist_id)
@@ -108,17 +108,17 @@ def delete_therapist():
 
 @views.route('/delete_user', methods = ['GET', 'POST'])
 @login_required
-def delete_user():
+def delete_user():#Deletes user from the User database
     if request.method == 'POST':
         user_id = request.form['user_id']
         admin = Admin.query.filter_by(user_id=user_id).first()
         therapist = Therapist.query.filter_by(user_id=user_id).first()
-        if admin:
+        if admin:#if user is an admin it will not remove from the database
             flash('User is an Admin', 'error')
-        elif therapist:
+        elif therapist:#if user is a therapist it will not remove from the database
             flash('User is a Therapist', 'error')
         else:
-            remove_user = User.query.get_or_404(user_id)
+            remove_user = User.query.get_or_404(user_id)#removes the user from the database
             db.session.delete(remove_user)
             db.session.commit()
         return redirect(url_for('views.control_panel'))
