@@ -53,26 +53,73 @@ def control_panel():
 def new_therapist():#Adds the Add Therapist form submissions into the Therapist Database
     if request.method == 'POST':
         userid = request.form["id"]
-        name = request.form["name"]
-        email = request.form["email"]
-
-        thera = Therapist(user_id=userid, first_name=name, email=email)
-        db.session.add(thera)
-        db.session.commit()
-        flash('Therapist Added', category='success')
+        name = request.form["user_name"]
+        email = request.form["user_email"]
+        therapist = Therapist.query.filter_by(email=email).first()
+        if therapist:
+            flash('Already a Therapist', 'error')
+        else:
+            thera = Therapist(user_id=userid, first_name=name, email=email)
+            db.session.add(thera)
+            db.session.commit()
+            flash('Therapist Added', category='success')
         return redirect(url_for('views.control_panel'))
     return render_template('control_panel.html', user=current_user)
 
 @views.route('/add-admin', methods = ['GET', 'POST'])
 @login_required
 def new_admin():#Adds the Add Therapist form submissions into the Therapist Database
+
     if request.method == 'POST':
         userid = request.form["id"]
         email = request.form["email"]
+        admin = Admin.query.filter_by(email=email).first()
+        if admin:
+            flash('Already an Admin', category='error')
+        else:
+            adm = Admin(user_id=userid,  email=email)
+            db.session.add(adm)
+            db.session.commit()
+            flash('Admin Added', category='success')
+        return redirect(url_for('views.control_panel'))
+    return render_template('control_panel.html', user=current_user)
 
-        adm = Admin(user_id=userid,  email=email)
-        db.session.add(adm)
+@views.route('/delete_admin', methods = ['GET', 'POST'])
+@login_required
+def delete_admin():
+    if request.method == 'POST':
+        admin_id = request.form['admin_id']
+        remove_admin = Admin.query.get_or_404(admin_id)
+        db.session.delete(remove_admin)
         db.session.commit()
-        flash('Admin Added', category='success')
+        return redirect(url_for('views.control_panel'))
+    return render_template('control_panel.html', user=current_user)
+
+@views.route('/delete_therapist', methods = ['GET', 'POST'])
+@login_required
+def delete_therapist():
+    if request.method == 'POST':
+        therapist_id = request.form['therapist_id']
+        remove_therapist = Therapist.query.get_or_404(therapist_id)
+        db.session.delete(remove_therapist)
+        db.session.commit()
+        return redirect(url_for('views.control_panel'))
+    return render_template('control_panel.html', user=current_user)
+
+@views.route('/delete_user', methods = ['GET', 'POST'])
+@login_required
+def delete_user():
+    if request.method == 'POST':
+        user_id = request.form['user_id']
+        admin = Admin.query.filter_by(user_id=user_id).first()
+        therapist = Therapist.query.filter_by(user_id=user_id).first()
+        if admin:
+            flash('User is an Admin', 'error')
+        elif therapist:
+            flash('User is a Therapist', 'error')
+        else:
+            remove_user = Therapist.query.get_or_404(user_id)
+            db.session.delete(remove_user)
+            db.session.commit()
         return redirect(url_for('views.control_panel'))
     return render_template('control_panel.html', user=current_user)
