@@ -25,6 +25,9 @@ class Therapist(db.Model, UserMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     email = db.Column(db.String(150), db.ForeignKey('user.email'))
     first_name = db.Column(db.String(150), db.ForeignKey('user.first_name'))
+    certifications = db.Column(db.String(150))
+    specializations = db.Column(db.String(150))
+    Bio = db.Column(db.String(1000))
 
 class Admin(db.Model, UserMixin):
     admin_id = db.Column(db.Integer, primary_key=True)

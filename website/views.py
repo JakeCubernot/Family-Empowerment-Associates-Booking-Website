@@ -128,6 +128,29 @@ def delete_user():#Deletes user from the User database
         return redirect(url_for('views.control_panel'))
     return render_template('control_panel.html', user=current_user)
 
+@views.route('/therapist-info', methods = ['GET', 'POST'])
+@login_required
+def therapist_info():#Adds user into the Admin database
+
+    if request.method == 'POST':
+        cert = request.form["cert"]
+        spec = request.form["spec"]
+        bio = request.form["bio"]
+        thera = Therapist(certifications=cert,specializations=spec, bio=bio)
+        db.session.add(thera)
+        db.session.commit()
+        flash('Information Updated', category='success')
+        return redirect(url_for('views.therapist_info_form'))
+    return render_template('therapist_info_form.html', user=current_user)
+
+@views.route('/therapist-info', methods=['GET', 'POST'])
+@login_required #Cannot access homepage unless logged in.
+def therapist_info_page():
+    check_result = check_therapist(current_user)
+    if check_result:
+        return check_result
+    return render_template('therapist_info_form.html', user=current_user)
+
 def check_admin(current_user):
     id = current_user.id
     admin = Admin.query.filter_by(user_id=id).first()

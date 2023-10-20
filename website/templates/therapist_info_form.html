@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Therapist Information Page{% endblock %}
+{% block content %}
+<h1 align="center">Therapist Information Form</h1>
+<hr/>
+
+
+<div class="center-box" style="max-width: 2400px; margin: 20px auto; z-index: -1;">
+    <h1 align="center" style="margin-top: 20px;">Submit Information</h1>
+
+    <div class="container-fluid" style="clear: both;">
+        <div class="section">
+            <hr style="opacity: 0.5;">
+            <h3>Submit Information</h3>
+            <form action="{{ request.path }}" method="POST">
+                <div class="form-group">
+                    <label for="id">Certifications</label>
+                    <input type="text" class="form-control" id="cert" placeholder="Enter Certifications Here" />
+                </div>
+                <div class="form-group">
+                    <label for="name">Specializations</label>
+                    <input type="text" class="form-control" id="spec" placeholder="Enter Specializations" />
+                </div>
+                <div class="form-group">
+                    <label for="Bio">Bio</label>
+                    <textarea name="note" id="Bio" class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
