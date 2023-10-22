@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        .btn-primary {
+            color: #fff;
+            background-color: #1470af;
+            border-color: #1470af;
+        }
+
+        .bg-dark {
+            background-color: #1470af!important;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+
+        body {
+            margin-bottom: 100px;
+        }
+
+        .center-box {
+            max-width: 400px;
+            margin: 20px auto;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            max-width: 200px; 
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .center-box {
+                padding: 10px;
+            }
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #8eb6dc; 
+            color: #fff; 
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">John's Profile</h1>
+    <hr/>
+
+    <div class="center-box">
+        <h3>Email: john@example.com</h3>
+        <h3>Name: John</h3>
+     
+        <h3>Certifications: Certified Therapist, Mental Health Specialist</h3>
+        <h3>Specializations: Anxiety, Depression</h3>
+        <h3>Bio: John has over 10 years of experience in the field of mental health...</h3>
+        <button class="btn btn-primary">Edit Profile</button>
+    </div>
+
+    <script>
+       
+        function deleteNote(noteId) {
+            fetch("/delete-note", {
+                method: "POST",
+                body: JSON.stringify({ noteId: noteId }),  //Converts to string so views.delete_note() can read it
+            }).then((_res) => {
+                window.location.href = "/";
+            });
+        }
+    </script>
+</body>
+</html>
