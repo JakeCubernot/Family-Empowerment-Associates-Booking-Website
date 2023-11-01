@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
 
 class Room(db.Model, UserMixin):
     name = db.Column(db.String(100), primary_key=True)
+    available = db.Column(db.Boolean (db.Column(db.Integer, db.ForeignKey)))
 
 class Therapist(db.Model, UserMixin):
     therapist_id = db.Column(db.Integer, primary_key=True)
