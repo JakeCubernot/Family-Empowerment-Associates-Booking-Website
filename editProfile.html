@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        .btn-primary {
+            color: #fff;
+            background-color: #1470af;
+            border-color: #1470af;
+        }
+
+        .bg-dark {
+            background-color: #1470af!important;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+
+        body {
+            margin-bottom: 100px;
+        }
+
+        .center-box {
+            max-width: 400px;
+            margin: 20px auto;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            max-width: 200px; 
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .center-box {
+                padding: 10px;
+            }
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #8eb6dc; 
+            color: #fff; 
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Edit Profile</h1>
+    <hr/>
+
+    <div class="center-box">
+        <form method="POST">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email" value="john@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" name="firstName" value="John" required>
+            </div>
+            <div class="form-group">
+                <label for="password1">New Password</label>
+                <input type="password" class="form-control" name="password1">
+            </div>
+            <div class="form-group">
+                <label for="password2">Confirm New Password</label>
+                <input type="password" class="form-control" name="password2">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+
+    <script>
+        // Take noteId passed to this function and send POST request to delete-note, then refreshes page. 
+        function deleteNote(noteId) {
+            fetch("/delete-note", {
+                method: "POST",
+                body: JSON.stringify({ noteId: noteId }),  //Converts to string so views.delete_note() can read it
+            }).then((_res) => {
+                window.location.href = "/";
+            });
+        }
+    </script>
+</body>
+</html>

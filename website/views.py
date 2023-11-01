@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, g
 from flask_login import login_required, current_user #When user is logged in, current_user will retrieve all data
 from .models import User, Note, Therapist, Admin
 from .import db
@@ -43,6 +43,10 @@ def book():
 @views.route('/control_panel', methods=['GET', 'POST'])
 @login_required
 def control_panel():#Loads the Databases into the HTML tables
+    check_result = check_admin(current_user)
+    if check_result:
+            return check_result
+
     user1 = User.query.all()
     therapist1 = Therapist.query.all()
     admin = Admin.query.all()
@@ -123,3 +127,56 @@ def delete_user():#Deletes user from the User database
             db.session.commit()
         return redirect(url_for('views.control_panel'))
     return render_template('control_panel.html', user=current_user)
+
+@views.route('/therapist-info', methods = ['GET', 'POST'])
+@login_required
+def therapist_info():#Adds user into the Admin database
+    check_result = check_therapist(current_user)
+    if check_result:
+        return check_result
+    if request.method == 'POST':
+        cert = request.form["cert"]
+        spec = request.form["spec"]
+        bio = request.form.get('Bio')
+        thera = Therapist.query.filter_by(user_id=current_user.id).first()
+        if thera:
+            thera.certifications = cert
+            thera.specializations = spec
+            thera.Bio = bio
+        db.session.add(thera)
+        db.session.commit()
+        flash('Information Updated', category='success')
+        return redirect(url_for('views.therapist_info'))
+    return render_template('therapist_info_form.html', user=current_user)
+
+@views.route('/therapist-info', methods=['GET', 'POST'])
+@login_required #Cannot access homepage unless logged in.
+def therapist_info_page():
+    check_result = check_therapist(current_user)
+    if check_result:
+        return check_result
+    return render_template('therapist_info_form.html', user=current_user)
+
+@views.route('/therapist-listing', methods=['GET', 'POST'])
+@login_required
+def therapist_listing():
+    therapist1 = Therapist.query.all()
+    return render_template('therapist_listing.html', user=current_user, therapist1=therapist1)
+def check_admin(current_user):
+    id = current_user.id
+    admin = Admin.query.filter_by(user_id=id).first()
+    if admin:
+        return None
+    else:
+        flash('Not authorized', 'error')
+        return redirect(url_for('views.home'))
+
+def check_therapist(current_user):
+    id = current_user.id
+    thera = Therapist.query.filter_by(user_id=id).first()
+    admin = Admin.query.filter_by(user_id=id).first()
+    if thera or admin:
+        return None
+    else:
+        flash('Not Authorized', 'error')
+        return redirect(url_for('views.home'))
