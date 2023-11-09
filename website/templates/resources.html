@@ -1,0 +1,21 @@
+<!-- resources.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resource Page</title>
+</head>
+<body>
+    <h1>Resource Page</h1>
+    <ul>
+        {% for resource in resources %}
+        <li>
+            <h3>{{ resource['title'] }}</h3>
+            <p>{{ resource['description'] }}</p>
+            <a href="{{ resource['url'] }}" target="_blank">View Resource</a>
+            <p>Category: {{ resource['category'] }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
