@@ -1,58 +1,61 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from flask_login import login_required, current_user
-from .models import User, Note
-from . import db
-from werkzeug.security import generate_password_hash
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'YourSecretKey'  # Replace with your secret key
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'  # Replace with your database URI
+db = SQLAlchemy(app)
 
-@app.route('/profile', methods=['GET', 'POST'])
+
+login_manager = LoginManager()
+login_manager.login_view = 'login'
+login_manager.init_app(app)
+
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    first_name = db.Column(db.String(1000))
+    # Add other fields as necessary
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+@app.route('/')
+def index():
+    return 'Home Page'
+
+@app.route('/login')
+def login():
+    return 'Login Page'  # Replace with your login logic
+
+@app.route('/profile', methods=['GET'])
 @login_required
-def profile():
+def display_profile():
+    return render_template('profile_display.html', user=current_user)
+
+@app.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
     if request.method == 'POST':
-        email = request.form.get('email')
-        first_name = request.form.get('firstName')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
+        # Add your profile editing logic here
+        pass
 
-        if email != current_user.email:
-            existing_user = User.query.filter_by(email=email).first()
-            if existing_user:
-                flash('Email is already in use.', category='error')
-            elif len(email) < 4:
-                flash('Email must be greater than 3 characters.', category='error')
-            else:
-                current_user.email = email
+    return render_template('profile_edit.html', user=current_user)
 
-        if len(first_name) < 2:
-            flash('First name must be greater than 1 character.', category='error')
-        else:
-            current_user.first_name = first_name
-
-        if password1 and password2:
-            if password1 != password2:
-                flash('Passwords don\'t match.', category='error')
-            elif len(password1) < 7:
-                flash('Password must be at least 7 characters.', category='error')
-            else:
-                current_user.password = generate_password_hash(password1, method='sha256')
-
-        db.session.commit()
-        flash('Profile updated!', category='success')
-        return redirect(url_for('profile'))
-
-    return render_template('profile.html', user=current_user)
-
-@app.route('/delete-note', methods=['POST'])
+@app.route('/logout')
 @login_required
-def delete_note():
-    data = request.get_json()
-    note_id = data.get('noteId')
-    note = Note.query.get(note_id)
-    if note:
-        db.session.delete(note)
-        db.session.commit()
-    return redirect(url_for('profile'))
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
+    db.create_all()  # Create database tables
     app.run(debug=True)
