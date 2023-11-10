@@ -180,3 +180,8 @@ def check_therapist(current_user):
     else:
         flash('Not Authorized', 'error')
         return redirect(url_for('views.home'))
+    
+@views.route('/resources')
+@login_required
+def resources():
+    return render_template('resources.html', user=current_user)
