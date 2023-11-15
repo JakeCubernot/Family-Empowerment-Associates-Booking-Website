@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, g
 from flask_login import login_required, current_user #When user is logged in, current_user will retrieve all data
-from .models import User, Note, Therapist, Admin
+from .models import User, Note, Therapist, Admin, Booking, Room
+from datetime import datetime
 from .import db
 import json
 
@@ -34,11 +35,6 @@ def delete_note():
             db.session.commit()
     
     return jsonify({})
-
-@views.route('/book', methods=['GET', 'POST'])
-@login_required #Cannot access homepage unless logged in.
-def book():
-    return render_template('book.html', user=current_user)
     
 @views.route('/control_panel', methods=['GET', 'POST'])
 @login_required
@@ -185,3 +181,63 @@ def check_therapist(current_user):
 @login_required
 def resources():
     return render_template('resources.html', user=current_user)
+
+@views.route('/book', methods=['GET', 'POST'])
+@login_required
+def book():
+    if request.method == 'GET':
+        rooms = Room.query.all()
+        return render_template('book.html', rooms=rooms, user=current_user)
+
+    elif request.method == 'POST':
+        room_id = request.form.get('room_id')
+        start_time = datetime.fromisoformat(request.form.get('start_time'))
+        end_time = datetime.fromisoformat(request.form.get('end_time'))
+
+        overlapping_bookings = Booking.query.filter(
+            Booking.room_id == room_id,
+            Booking.start_time < end_time,
+            Booking.end_time > start_time
+        ).all()
+
+        if overlapping_bookings:
+            flash("Room is not available for the selected time slot.", "error")
+        else:
+            new_booking = Booking(
+                therapist_id=current_user.id,  # Assuming current_user is the therapist
+                room_id=room_id,
+                start_time=start_time,
+                end_time=end_time
+            )
+            db.session.add(new_booking)
+            db.session.commit()
+            flash("Booking successful.", "success")
+
+        return redirect(url_for('views.book'))
+
+    return render_template('book.html', rooms=Room.query.all(), user=current_user)
+
+
+#Book a room Logic
+def book_room(therapist_id, room_id, start_time, end_time):
+    overlapping_bookings = Booking.query.filter(
+        Booking.room_id == room_id,
+        Booking.start_time < end_time,
+        Booking.end_time > start_time
+    ).all()
+
+    if overlapping_bookings:
+        flash("Room is not available for the selected time slot.", "error")
+        return "Room is not available for the selected time slot."
+
+    new_booking = Booking(
+        therapist_id=therapist_id,
+        room_id=room_id,
+        start_time=start_time,
+        end_time=end_time
+    )
+    db.session.add(new_booking)
+    db.session.commit()
+    flash("Booking successful.", "success")
+    return "Booking successful."
+

@@ -1,4 +1,42 @@
-{% extends "base.html" %} {% block title %}Book a Room{% endblock %} '
+{% extends "base.html" %} 
+{% block title %}Book a Room{% endblock %}
+
 {% block content %}
-    <h1 align="center">Book a Room</h1>
+<!DOCTYPE html>
+<html lang="en">
+<h1 align="center">Book a Room</h1>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% for room in rooms %}
+  <div class="room">
+      <h3>{{ room.name }}</h3>
+      <form method="POST" action="{{ url_for('views.book') }}">
+          <input type="hidden" name="room_id" value="{{ room.id }}">
+
+          <label for="start_time-{{ room.id }}">Start Time:</label>
+          <input type="datetime-local" id="start_time-{{ room.id }}" name="start_time" required>
+
+          <label for="end_time-{{ room.id }}">End Time:</label>
+          <input type="datetime-local" id="end_time-{{ room.id }}" name="end_time" required>
+
+          <button type="submit">Book Room</button>
+      </form>
+  </div>
+  {% endfor %}
+
+
+    <div id="booking-message"></div>
+
+    <!-- Include index.js -->
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+  
+</body>
+</html>
 {% endblock %}

@@ -1,9 +1,9 @@
-// Take noteId passed to this function and send POST request to delete-note, then refreshes page. 
+// Function to handle note deletion
 function deleteNote(noteId) {
-    fetch("/delete-note", {
+  fetch("/delete-note", {
       method: "POST",
-      body: JSON.stringify({ noteId: noteId }),  //Converts to string so views.delete_note() can read it
-    }).then((_res) => {
+      body: JSON.stringify({ noteId: noteId }),
+  }).then((_res) => {
       window.location.href = "/";
-    });
-  }
+  });
+}
