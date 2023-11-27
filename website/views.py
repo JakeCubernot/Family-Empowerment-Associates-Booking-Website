@@ -241,3 +241,8 @@ def book_room(therapist_id, room_id, start_time, end_time):
     flash("Booking successful.", "success")
     return "Booking successful."
 
+@views.route('/calendar')
+@login_required
+def cal():
+    user = current_user
+    return render_template("calendar.html", user=user)
