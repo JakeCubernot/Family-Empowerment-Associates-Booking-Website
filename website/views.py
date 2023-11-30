@@ -246,3 +246,19 @@ def book_room(therapist_id, room_id, start_time, end_time):
 def cal():
     user = current_user
     return render_template("calendar.html", user=user)
+
+@views.route('/get-bookings', methods=['GET'])
+@login_required
+def get_bookings():
+    bookings = Booking.query.all()
+    booking_data = []
+
+    for booking in bookings:
+        booking_data.append({
+            'title': f"Room {booking.room_id}",  # Modify as needed
+            'start': booking.start_time.isoformat(),
+            'end': booking.end_time.isoformat(),
+            # Add more fields as needed
+        })
+
+    return jsonify(booking_data)

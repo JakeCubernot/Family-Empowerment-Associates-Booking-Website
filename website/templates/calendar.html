@@ -10,9 +10,24 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar-container');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth'
-            });
-            calendar.render();
+                timeZone: 'UTC',
+                initialView: 'timeGridFourDay',
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'timeGridDay,timeGridFourDay,dayGridMonth'
+                },
+                views: {
+                timeGridFourDay: {
+                    type: 'timeGrid',
+                    duration: { days: 4 },
+                    buttonText: '4 day'
+                    }
+                },
+                events: '/get-bookings'
+        });
+
+        calendar.render();
         });
     </script>
     <div id="calendar-container"></div>
