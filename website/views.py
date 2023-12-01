@@ -254,11 +254,23 @@ def get_bookings():
     booking_data = []
 
     for booking in bookings:
+        room = Room.query.get(booking.room_id)
+        room_name = room.name if room else "Unknown Room"
+
+        # Fetching the therapist and then the user associated with the booking
+        therapist = Therapist.query.get(booking.therapist_id)
+        if therapist:
+            user = User.query.get(therapist.user_id)
+            user_name = user.first_name if user else "Unknown User"
+
+        description = f"Room: {room_name} \nBooked by: {user_name}"
         booking_data.append({
-            'title': f"Room {booking.room_id}",  # Modify as needed
+            'title': f"{room_name} ({user_name})",
             'start': booking.start_time.isoformat(),
             'end': booking.end_time.isoformat(),
-            # Add more fields as needed
+            'description': description  # Add this line
         })
 
     return jsonify(booking_data)
+
+

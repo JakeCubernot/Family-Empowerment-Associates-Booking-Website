@@ -138,19 +138,15 @@
         ></script>
 
         <!--Allows the use of JS. Place JS in the index.js in the static folder.-->
-        <script 
-        type="text/javascript"
-        src="{{ url_for('static', filename='index.js') }}">
-      </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 
     </body>
-
     {% block footer %}
     <footer>
       76 W Jimmie Leeds Rd Suite 305 Galloway, NJ 08205 | (609) 916-6500 | feareferrals@gmail.com
     </footer>
     {% endblock %}
-</body>
+    </body>
 </html>
 
 </html>

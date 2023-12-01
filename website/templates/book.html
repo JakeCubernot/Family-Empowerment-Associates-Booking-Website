@@ -14,23 +14,37 @@
       {% endif %}
     {% endwith %}
 
-    {% for room in rooms %}
-  <div class="room">
-      <h3>{{ room.name }}</h3>
-      <form method="POST" action="{{ url_for('views.book') }}">
-          <input type="hidden" name="room_id" value="{{ room.id }}">
-
-          <label for="start_time-{{ room.id }}">Start Time:</label>
-          <input type="datetime-local" id="start_time-{{ room.id }}" name="start_time" required>
-
-          <label for="end_time-{{ room.id }}">End Time:</label>
-          <input type="datetime-local" id="end_time-{{ room.id }}" name="end_time" required>
-
-          <button type="submit">Book Room</button>
-      </form>
-  </div>
-  {% endfor %}
-
+    <div class="room">
+        <table class="table">
+            <thead style="background-color: #1470af; color: white;">
+                <tr>
+                    <th scope="col">Room Name</th>
+                    <th scope="col">Start Time</th>
+                    <th scope="col">End Time</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                <tr>
+                    <form method="POST" action="{{ url_for('views.book') }}">
+                      <td style="text-align: center; text-transform: uppercase; font-weight: bold;">{{ room.name }}</td>
+                      <td>
+                            <input type="datetime-local" id="start_time-{{ room.id }}" name="start_time" required>
+                        </td>
+                        <td>
+                            <input type="datetime-local" id="end_time-{{ room.id }}" name="end_time" required>
+                        </td>
+                        <td>
+                            <input type="hidden" name="room_id" value="{{ room.id }}">
+                            <button type="submit" class="btn btn-primary">Book Room</button>
+                        </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <div id="booking-message"></div>
 
